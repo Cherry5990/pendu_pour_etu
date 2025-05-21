@@ -124,7 +124,7 @@ public class MotMystere {
             // dernière lettre cachée
         }
         this.nbEerreursMax = nbErreursMax;
-         this.nbErreursRestantes = nbErreursMax;
+        this.nbErreursRestantes = nbErreursMax;
     }
 
     /**
