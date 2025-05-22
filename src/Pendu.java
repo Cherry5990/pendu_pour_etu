@@ -81,7 +81,10 @@ public class Pendu extends Application {
      * le bouton qui permet de (lancer ou relancer une partie
      */ 
     private Button bJouer;
-
+    /**
+     * la page d'accueil
+     */
+    private FenetreAccueil pageAccueil;
     /**
      * initialise les attributs (créer le modèle, charge les images, crée le chrono ...)
      */
@@ -90,11 +93,12 @@ public class Pendu extends Application {
         this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, MotMystere.FACILE, 10);
         this.lesImages = new ArrayList<Image>();
         this.chargerImages("./img");
+        this.pageAccueil = new FenetreAccueil(bJouer);
         // A terminer d'implementer
     }
 
     /**
-     * @return  le graphe de scène de la vue à partir de methodes précédantes
+     * @return  le graphe de scène de la vue à partir de methodes précédentes
      */
     private Scene laScene(){
         BorderPane fenetre = new BorderPane();
@@ -215,9 +219,10 @@ public class Pendu extends Application {
      */
     @Override
     public void start(Stage stage) {
+        Scene scene = new Scene(this.pageAccueil, 800, 1600);
         stage.setTitle("IUTEAM'S - La plateforme de jeux de l'IUTO");
-        stage.setScene(this.laScene());
-        this.modeAccueil();
+        stage.setScene(scene);
+        //this.modeAccueil();
         stage.show();
     }
 
