@@ -2,12 +2,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * Controleur du clavier
  */
 public class ControleurLettres implements EventHandler<ActionEvent> {
-
     /**
      * modèle du jeu
      */
@@ -16,13 +17,18 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
      * vue du jeu
      */
     private Pendu vuePendu;
-
+    /**
+     * boutons qui ont été désactivés
+     */
+    private Set<String> btnDesactives;
     /**
      * @param modelePendu modèle du jeu
      * @param vuePendu vue du jeu
      */
     ControleurLettres(MotMystere modelePendu, Pendu vuePendu){
-        // A implémenter
+        this.btnDesactives = new HashSet<>();
+        this.modelePendu = modelePendu;
+        this.vuePendu = vuePendu;
     }
 
     /**
@@ -32,6 +38,9 @@ public class ControleurLettres implements EventHandler<ActionEvent> {
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        // A implémenter
+        Button btnAppuye = (Button) actionEvent.getSource();
+        String lettreAppuyee = btnAppuye.getText();
+        this.btnDesactives.add(lettreAppuyee);
+        this.vuePendu.desacBoutons(btnDesactives);
     }
 }

@@ -10,14 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.control.Tooltip;
-import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar.ButtonData ;
-import javafx.scene.control.ButtonType ;
+
 import java.util.List;
+import java.util.Set;
 import java.util.Arrays;
 import java.io.File;
 import java.util.ArrayList;
@@ -74,6 +71,10 @@ public class Pendu extends Application {
      */
     private Button boutonParametres;
     /**
+     * le bouton Info / I
+     */    
+    private Button boutonInfo;
+    /**
      * le bouton Accueil / Maison
      */    
     private Button boutonMaison;
@@ -86,6 +87,18 @@ public class Pendu extends Application {
      */
     private FenetreAccueil pageAccueil;
     /**
+     * la page de jeu
+     */
+    private FenetreJeu pageJeu;
+    /**
+     * la scene
+     */
+    private Scene scene;
+    /**
+     * le clavier
+     */
+    private Clavier leClavier;
+    /**
      * initialise les attributs (créer le modèle, charge les images, crée le chrono ...)
      */
     @Override
@@ -93,7 +106,27 @@ public class Pendu extends Application {
         this.modelePendu = new MotMystere("/usr/share/dict/french", 3, 10, MotMystere.FACILE, 10);
         this.lesImages = new ArrayList<Image>();
         this.chargerImages("./img");
-        this.pageAccueil = new FenetreAccueil(bJouer);
+        this.leClavier = new Clavier("abcdefghijklmnopqrstuvwxyz", new ControleurLettres(this.modelePendu, this));
+
+
+        ImageView imgHome = new ImageView("home.png");
+        imgHome.setFitHeight(20);
+        imgHome.setFitWidth(20);
+        this.boutonMaison = new Button("", imgHome);
+
+        ImageView imgInfo = new ImageView("info.png");
+        imgInfo.setFitHeight(20);
+        imgInfo.setFitWidth(20);
+        this.boutonInfo = new Button("", imgInfo);
+        
+        ImageView imgSettings = new ImageView("parametres.png");
+        imgSettings.setFitHeight(20);
+        imgSettings.setFitWidth(20);
+        this.boutonParametres = new Button("", imgSettings);
+
+        this.fenetreAccueil();
+        this.fenetreJeu();
+
         // A terminer d'implementer
     }
 
@@ -125,24 +158,20 @@ public class Pendu extends Application {
         // return res;
     // }
 
-    // /**
-     // * @return la fenêtre de jeu avec le mot crypté, l'image, la barre
-     // *         de progression et le clavier
-     // */
-    // private Pane fenetreJeu(){
-        // A implementer
-        // Pane res = new Pane();
-        // return res;
-    // }
+    /**
+     * Crée la fenêtre de jeu avec le mot crypté, l'image, la barre
+     *         de progression et le clavier
+     */
+    private void fenetreJeu(){
+        this.pageJeu = new FenetreJeu(this.bJouer, this.boutonMaison, this.boutonParametres, this.boutonInfo, this.leClavier);
+    }
 
-    // /**
-     // * @return la fenêtre d'accueil sur laquelle on peut choisir les paramètres de jeu
-     // */
-    // private Pane fenetreAccueil(){
-        // A implementer    
-        // Pane res = new Pane();
-        // return res;
-    // }
+    /**
+     * Crée la fenêtre d'accueil sur laquelle on peut choisir les paramètres de jeu
+     */
+    private void fenetreAccueil(){   
+        this.pageAccueil = new FenetreAccueil(this.bJouer, this.boutonMaison, this.boutonParametres, this.boutonInfo);
+    }
 
     /**
      * charge les images à afficher en fonction des erreurs
@@ -157,11 +186,11 @@ public class Pendu extends Application {
     }
 
     public void modeAccueil(){
-        // A implementer
+        this.scene.setRoot(this.pageAccueil);
     }
     
     public void modeJeu(){
-        // A implementer
+        this.scene.setRoot(this.pageJeu);
     }
     
     public void modeParametres(){
@@ -219,11 +248,19 @@ public class Pendu extends Application {
      */
     @Override
     public void start(Stage stage) {
-        Scene scene = new Scene(this.pageAccueil, 800, 1600);
+        this.scene = new Scene(this.pageAccueil, 800, 1600);
         stage.setTitle("IUTEAM'S - La plateforme de jeux de l'IUTO");
         stage.setScene(scene);
-        //this.modeAccueil();
+        this.modeJeu();
         stage.show();
+    }
+
+    public MotMystere getModele(){
+        return this.modelePendu;
+    }
+
+    public void desacBoutons(Set<String> touches){
+        this.leClavier.desactiveTouches(touches);
     }
 
     /**

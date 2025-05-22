@@ -3,41 +3,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class FenetreAccueil extends BorderPane {
-    public FenetreAccueil(Button btn){
-        this.setHaut();
+    public FenetreAccueil(Button btnJouer, Button btnAccueil, Button btnSettings, Button btnInfo){
+        this.setHaut(btnAccueil, btnSettings, btnInfo);
 
         this.setCentre();
     }
 
-    private void setHaut(){
+    private void setHaut(Button btnAccueil, Button btnSettings, Button btnInfo){
         BorderPane haut = new BorderPane();
         
         Text texte = new Text("Jeu du Pendu");
 
         HBox boiteBtn = new HBox();
-        ImageView imgHome = new ImageView("home.png");
-        ImageView imgSettings = new ImageView("parametres.png");
-        ImageView imgInfo = new ImageView("info.png");
-        imgSettings.setFitHeight(20);
-        imgHome.setFitHeight(20);
-        imgInfo.setFitHeight(20);
-        imgSettings.setFitWidth(20);
-        imgHome.setFitWidth(20);
-        imgInfo.setFitWidth(20);
-        Button btnAccueil = new Button("", imgHome);
-        Button btnSettings = new Button("", imgSettings);
-        Button btnInfo = new Button("", imgInfo);
         boiteBtn.getChildren().addAll(btnAccueil, btnSettings, btnInfo);
 
         haut.setLeft(texte);
         haut.setRight(boiteBtn);
+        boiteBtn.setAlignment(Pos.CENTER_RIGHT);
         this.setTop(haut);
     }
 

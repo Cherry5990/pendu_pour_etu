@@ -8,6 +8,8 @@ import javafx.scene.shape.Circle ;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Génère la vue d'un clavier et associe le contrôleur aux touches
@@ -17,7 +19,7 @@ public class Clavier extends TilePane{
     /**
      * il est conseillé de stocker les touches dans un ArrayList
      */
-    private List<Button> clavier;
+    private Map<String, Button> clavier;
 
     /**
      * constructeur du clavier
@@ -26,7 +28,13 @@ public class Clavier extends TilePane{
      * @param tailleLigne nombre de touches par ligne
      */
     public Clavier(String touches, EventHandler<ActionEvent> actionTouches) {
-        // A implémenter
+        this.clavier = new HashMap<>();
+        for (char lettre : touches.toCharArray()){
+            Button bouton = new Button(String.valueOf(lettre));
+            bouton.setOnAction(actionTouches);
+            this.clavier.put(String.valueOf(lettre), bouton);
+            this.getChildren().add(bouton);
+        }
     }
 
     /**
@@ -34,6 +42,8 @@ public class Clavier extends TilePane{
      * @param touchesDesactivees une chaine de caractères contenant la liste des touches désactivées
      */
     public void desactiveTouches(Set<String> touchesDesactivees){
-        // A implémenter
+        for (String lettre : touchesDesactivees){
+            this.clavier.get(lettre).disarm();
+        }
     }
 }
